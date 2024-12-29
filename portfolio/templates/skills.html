@@ -24,7 +24,7 @@
             <th scope="row">{{skill['id']}}</th>
             <td>{{skill['name']}}</td>
             <td>
-                <a href="" class="btn btn-warning">edit</a>
+                <a href="{{url_for('edit', skill_id=skill['id'])}}" class="btn btn-warning">edit</a>
                 <a href="{{url_for('delete', skill_id=skill['id'])}}" class="btn btn-danger">delete</a>
             </td>            
           </tr>

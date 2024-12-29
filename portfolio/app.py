@@ -7,7 +7,7 @@ app = Flask(__name__)
 skills = [
     {'id': 1, 'name': 'Proactive'},
     {'id': 2, 'name': 'Empatheric'},
-    {'id': 3, 'name': 'Call mom'}
+    {'id': 3, 'name': 'Numbers oriented'}
 ]
 next_id = 4
 
@@ -35,7 +35,29 @@ def create_view():
 @app.route("/delete/<int:skill_id>", methods=["GET"])
 def delete(skill_id):
     global skills
+    skill_to_delete = next((skill for skill in skills if skill['id']==skill_id))
+    if skill_to_delete:
+        skills.remove(skill_to_delete)
+        return redirect(url_for('skills_view'))
+    else:
+        return redirect(url_for('skills_view'))
     
+@app.route("/edit/<int:skill_id>", methods=["GET", "POST"])
+def edit(skill_id):
+    global skills
+    skill_to_edit=next((skill for skill in skills if skill['id']==skill_id), None)
+    if not skill_to_edit:
+        return redirect(url_for('skills_view'))
+    
+    if request.method == 'POST':
+        new_name = request.form['name']
+        if new_name:
+            skill_to_edit['name'] = new_name
+            return redirect(url_for('skills_view'))
+        
+    
+    return render_template('edit.html', skill=skill_to_edit)
+        
 
 if __name__ == '__main__':
     app.run(debug=True)
